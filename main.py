@@ -1,7 +1,7 @@
-from config import ConfigReader
 import asyncio
+from config import ConfigReader
 import server.TCPServer as TCPServer
-import server.UDPServer
+import server.UDPServer as UDPServer
 import dev.FCLight as FCLight
 
 # get config object
@@ -11,7 +11,7 @@ config = ConfigReader.get_config()
 tcp_server = TCPServer.TCPServer()
 
 # init udp server
-udp_server = server.UDPServer.UDPServer()
+udp_server = UDPServer.UDPServer()
 
 # dev
 
