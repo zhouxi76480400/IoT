@@ -1,10 +1,13 @@
 import json
+import os
 
 
 # be const
 config_file_name = "config.txt"  # filename
 config_ver_key = 'ver'  # version
 config_devices_key = "devices"  # devices
+
+project_path = os.path.dirname(os.path.split(os.path.realpath(__file__))[0])
 
 
 # a class of config
@@ -33,7 +36,8 @@ def get_config():
 
 # will auto perform this function
 def init_config():
-    init_config_file_object = open("../" + config_file_name, encoding='utf-8')
+
+    init_config_file_object = open(project_path + "/" + config_file_name, encoding='utf-8')
     try:
         init_config_all_text = init_config_file_object.read()
     except Exception as e:
@@ -59,7 +63,7 @@ def init_config():
 def get_devices(file_name):
     # devices
     devices_list = []
-    get_devices_file_object = open("../" + file_name, encoding='utf-8')
+    get_devices_file_object = open(project_path + "/" + file_name, encoding='utf-8')
     try:
         get_devices_all_json = json.load(get_devices_file_object)
     except Exception as e:

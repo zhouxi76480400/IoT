@@ -1,7 +1,7 @@
 import config.ConfigReader
 import json
 
-api_json = json.load(open("../api.json"))
+api_json = json.load(open(config.ConfigReader.project_path+"/api.json"))
 # all api dictionary
 api_json_dictionary = {}
 # get api_json_dictionary
