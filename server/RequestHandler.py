@@ -37,5 +37,5 @@ def appendResponse(resp):
 
 # GetAllDevicesList method
 def GetAllDevicesList(params):
-    str_all = open("../devices.json", encoding='utf-8').read()
+    str_all = open(config.ConfigReader.project_path+"/devices.json", encoding='utf-8').read()
     return str_all
