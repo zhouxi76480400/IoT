@@ -3,6 +3,7 @@ from config import ConfigReader
 import server.TCPServer as TCPServer
 import server.UDPServer as UDPServer
 import dev.FCLight as FCLight
+import dev.DHT11 as DHT11
 
 # get config object
 config = ConfigReader.get_config()
@@ -18,10 +19,13 @@ udp_server = UDPServer.UDPServer()
 # light
 light = FCLight.FCLight()
 
+# weather
+weather = DHT11.DHT11()
+
 # start event loop
 event_loop = asyncio.get_event_loop()
 udp_server.start_server(event_loop)
-tasks = [tcp_server.start_server(), light.start_service()]
+tasks = [tcp_server.start_server(), light.start_service(), weather.start_refresh()]
 event_loop.run_until_complete(asyncio.wait(tasks))
 try:
     event_loop.run_forever()
