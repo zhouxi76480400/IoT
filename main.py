@@ -35,9 +35,9 @@ def run_server_process():
 # device FCLight light sensor
 def start_fc_light_service():
     print("start_fc_light_service pid:" + str(os.getpid()))
-    while True:
-        print("test")
-        time.sleep(3)
+    # while True:
+    #     print("test")
+    #     time.sleep(3)
 
 
 def start_dht_11_weather_sensor_service():
@@ -45,13 +45,13 @@ def start_dht_11_weather_sensor_service():
     dht11 = DHT11()
     dht11.start_refresh()
 
+processes = 3
 
 # create processes array
 process_func_array = [run_server_process, start_fc_light_service, start_dht_11_weather_sensor_service]
 # create a processes pool
-pool = multiprocessing.Pool(processes=len(process_func_array))
+pool = multiprocessing.Pool(processes=processes)
 # start processes
 for a_process in process_func_array:
     pool.apply_async(func=a_process)
-pool.close()
 pool.join()
