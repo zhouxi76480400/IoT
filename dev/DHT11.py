@@ -23,6 +23,9 @@ def delay_s(delay_time):
         continue
 
 
+channel = 17  # means gpio0
+
+
 class DHT11(object):
     _instance = None
 
@@ -36,64 +39,69 @@ class DHT11(object):
         return cls._instance
 
     def start_refresh(self):
-        print("test")
+        self.init_gpio()
+        while True:
+            self.do_refresh()
+        self.clean_gpio()
 
+    def init_gpio(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+
+    def clean_gpio(self):
+        GPIO.cleanup()
+
+    def do_refresh(self):
+        GPIO.setup(channel, GPIO.OUT)
+        GPIO.output(channel, GPIO.HIGH)
+        delay_s(3)
+        GPIO.setup(channel, GPIO.OUT)
+        GPIO.output(channel, GPIO.LOW)
+        delay_ms(25)
+        GPIO.output(channel, GPIO.HIGH)
+        GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+        delay_us(27)
+
+        data_array = []
+        humidity = -1
+        if GPIO.input(channel) == GPIO.LOW:
+            while GPIO.input(channel) != GPIO.HIGH:
+                continue
+            for i in range(40):
+                while GPIO.input(channel) == GPIO.HIGH:
+                    continue
+                while GPIO.input(channel) != GPIO.HIGH:
+                    continue
+                delay_us(32)
+                data_array.append(str(GPIO.input(channel)))
+
+            # check is ok?
+
+            str_humidity_high = str().join(data_array[0:8])
+            str_humidity_low = str().join(data_array[8:16])
+            str_temp_high = str().join(data_array[16:24])
+            str_temp_low = str().join(data_array[24:32])
+            check_sum = str().join(data_array[32:40])
+
+            humidity_int_high = int(str_humidity_high, 2)
+            humidity_int_low = int(str_humidity_low, 2)
+            humidity_int_all = humidity_int_high + humidity_int_low
+            temp_int_high = int(str_temp_high, 2)
+            temp_int_low = int(str_temp_low, 2)
+            temp_int_all = temp_int_high + temp_int_low
+            check_sum_int_all = int(check_sum, 2)
+
+            if humidity_int_all + temp_int_all == check_sum_int_all:
+                print("humidity:" + str(humidity_int_high) + "." + str(humidity_int_low) + "   temp:" + str(
+                    temp_int_high) + "." + str(temp_int_low))
+            else:
+                print("fail")
+        else:
+            print("fail")
 
     pass
 
 
 
 
-
-channel = 17
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(channel, GPIO.OUT)
-GPIO.output(channel, GPIO.HIGH)
-delay_s(3)
-GPIO.setup(channel, GPIO.OUT)
-GPIO.output(channel, GPIO.LOW)
-delay_ms(25)
-GPIO.output(channel, GPIO.HIGH)
-GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-delay_us(27)
-
-data_array = []
-humidity = -1
-if GPIO.input(channel) == GPIO.LOW:
-    while GPIO.input(channel) != GPIO.HIGH:
-        continue
-    for i in range(40):
-        while GPIO.input(channel) == GPIO.HIGH:
-            continue
-        while GPIO.input(channel) != GPIO.HIGH:
-            continue
-        delay_us(32)
-        data_array.append(str(GPIO.input(channel)))
-
-    #  check is ok?
-
-    str_humidity_high = str().join(data_array[0:8])
-    str_humidity_low = str().join(data_array[8:16])
-    str_temp_high = str().join(data_array[16:24])
-    str_temp_low = str().join(data_array[24:32])
-    check_sum = str().join(data_array[32:40])
-
-    humidity_int_high = int(str_humidity_high, 2)
-    humidity_int_low = int(str_humidity_low, 2)
-    humidity_int_all = humidity_int_high + humidity_int_low
-    temp_int_high = int(str_temp_high, 2)
-    temp_int_low = int(str_temp_low, 2)
-    temp_int_all = temp_int_high + temp_int_low
-    check_sum_int_all = int(check_sum, 2)
-
-    if humidity_int_all + temp_int_all == check_sum_int_all:
-        print("humidity:"+str(humidity_int_high)+"."+str(humidity_int_low)+"   temp:"+str(temp_int_high)+"."+str(temp_int_low))
-    else:
-        print("fail")
-else:
-    print("fail")
-
-GPIO.cleanup()
