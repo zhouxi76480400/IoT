@@ -6,6 +6,9 @@ import server.UDPServer as UDPServer
 import time
 import os
 
+# load devices
+import dev.DHT11 as DHT11
+
 
 # server for tcp and udp
 def run_server_process():
@@ -37,8 +40,14 @@ def start_fc_light_service():
         time.sleep(3)
 
 
+def start_dht_11_weather_sensor_service():
+    print("start_dht_11_weather_sensor_service" + str(os.getpgid()))
+    dht11 = DHT11()
+    dht11.start_refresh()
+
+
 # create processes array
-process_func_array = [run_server_process, start_fc_light_service]
+process_func_array = [run_server_process, start_fc_light_service, start_dht_11_weather_sensor_service]
 # create a processes pool
 pool = multiprocessing.Pool(processes=len(process_func_array))
 # start processes
