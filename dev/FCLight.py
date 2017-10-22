@@ -2,7 +2,7 @@ try:
     import RPi.GPIO as GPIO
 except RuntimeError:
     print("Cannot import RPi.GPIO")
-import asyncio
+import time
 
 fc_light_gpio_channel = 18  # gpio1
 
@@ -44,17 +44,15 @@ class FCLight(object):
     def clean_gpio(self):
         GPIO.cleanup(fc_light_gpio_channel)
 
-    @asyncio.coroutine
     def start_service(self):
         if not self.is_stop:
             self.init_gpio()
             while not self.is_stop:
-                yield from asyncio.sleep(fc_light_fresh_rate)
-                yield from self.update_light_status()
+                time.sleep(fc_light_fresh_rate)
+                self.update_light_status()
 
             self.clean_gpio()
 
-    @asyncio.coroutine
     def update_light_status(self):
         status_tmp = GPIO.input(fc_light_gpio_channel)
         if status_tmp != self.fc_light_now_status:

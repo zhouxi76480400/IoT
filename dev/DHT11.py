@@ -69,9 +69,16 @@ class DHT11(object):
             while GPIO.input(channel) != GPIO.HIGH:
                 continue
             for i in range(40):
+                wait_time_t = time.time()
                 while GPIO.input(channel) == GPIO.HIGH:
+                    if time.time() - wait_time_t > 1:
+                        delay_s(3)
+                        return
                     continue
                 while GPIO.input(channel) != GPIO.HIGH:
+                    if time.time() - wait_time_t > 1:
+                        delay_s(3)
+                        return
                     continue
                 delay_us(32)
                 data_array.append(str(GPIO.input(channel)))
@@ -99,6 +106,8 @@ class DHT11(object):
                 print("fail")
         else:
             print("fail")
+        delay_s(3)
+        return
 
     pass
 

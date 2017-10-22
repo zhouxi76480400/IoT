@@ -8,6 +8,7 @@ import os
 
 # load devices
 import dev.DHT11 as DHT11
+import dev.FCLight as FCLight
 
 
 # server for tcp and udp
@@ -35,13 +36,13 @@ def run_server_process():
 # device FCLight light sensor
 def start_fc_light_service():
     print("start_fc_light_service pid:" + str(os.getpid()))
-    while True:
-        print("test")
-        time.sleep(3)
+    fc_light = FCLight.FCLight()
+    fc_light.start_service()
+
 
 
 def start_dht_11_weather_sensor_service():
-    print("start_dht_11_weather_sensor_service" + str(os.getpid()))
+    print("start_dht_11_weather_sensor_service pid:" + str(os.getpid()))
     dht11 = DHT11.DHT11()
     dht11.start_refresh()
 
