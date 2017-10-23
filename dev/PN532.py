@@ -10,13 +10,17 @@ class PN532(object):
     wake_return_array = \
         b'\x00\x00\xff\x00\xff\x00\x00\x00\xff\x02\xfe\xd5\x15\x16\x00'
 
+    get_firmware_array = b'\x00\x00\xFF\x02\xFE\xD4\x02\x2A\x00'
+
     ser = serial.Serial()
     tmp_byte_array = b''
     is_wait = True
 
     def connect_serial(self):
-        self.ser = serial.Serial('/dev/tty.usbserial', 115200)
-        print(str(self.ser.is_open))
+        self.ser = serial.Serial(port='/dev/tty.usbserial',
+                                 baudrate=115200, bytesize=serial.EIGHTBITS,
+                                 stopbits=serial.STOPBITS_ONE, parity=serial.PARITY_NONE)
+        print("port is open:" + str(self.ser.is_open))
         self.wake()
 
     # wake
@@ -29,7 +33,7 @@ class PN532(object):
             else:
                 self.start()
                 return
-        print("pn532 wake")
+        print("pn532 wakeup now")
         self.is_wait = True
         self.tmp_byte_array = b''
         self.find_card()
@@ -41,8 +45,8 @@ class PN532(object):
 
         while self.is_wait:
             print("start")
-            aaa = self.ser.read(20)
-            print(aaa)
+            aaa = self.ser.read(25)
+            print(str(aaa))
             print("stop")
 
 
