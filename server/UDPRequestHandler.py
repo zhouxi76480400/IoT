@@ -28,4 +28,5 @@ def handle_multi_cast(package_name, version):
         resp = True
     else:
         resp = False
-    return str({"action": multi_cast_receive, "resp": resp, "ver": config.ConfigReader.get_config().version, "name": "xxxxx"})
+    return str({"action": multi_cast_receive, "resp": resp, "ver": config.ConfigReader.get_config().version,
+                "name": config.ConfigReader.get_config().host_name})

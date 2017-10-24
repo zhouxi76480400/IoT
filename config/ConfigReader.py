@@ -14,6 +14,7 @@ project_path = os.path.dirname(os.path.split(os.path.realpath(__file__))[0])
 class Config(object):
     version = 0
     devices = None
+    host_name = None
     pass
 
 
@@ -36,7 +37,6 @@ def get_config():
 
 # will auto perform this function
 def init_config():
-
     init_config_file_object = open(project_path + "/" + config_file_name, encoding='utf-8')
     try:
         init_config_all_text = init_config_file_object.read()
@@ -58,6 +58,8 @@ def init_config():
             # init devices
             elif init_config_item_key == config_devices_key:
                 config_class.devices = get_devices(init_config_item_value)
+        import socket
+        config_class.host_name = socket.gethostname()
 
 
 def get_devices(file_name):
