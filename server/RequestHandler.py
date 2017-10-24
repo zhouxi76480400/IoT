@@ -39,3 +39,22 @@ def appendResponse(resp):
 def GetAllDevicesList(params):
     str_all = open(config.ConfigReader.project_path+"/devices.json", encoding='utf-8').read()
     return str_all
+
+
+# CheckPasswordExist
+def IsServerHavePassword(params):
+    return str(config.ConfigReader.check_password_file_exist()).lower()
+
+
+# Set PWD
+def SetServersPassword(params):
+    int_set_servers_password = len(params)
+    if int_set_servers_password < 6 or int_set_servers_password > 20:
+        return str(False).lower()
+    # start write pwd
+    config.ConfigReader.create_password_file(params)
+    return str(True).lower()
+
+
+def PasswordAuthentication(params):
+    return str(config.ConfigReader.check_password(params)).lower()

@@ -2,5 +2,21 @@
   {
     "key": "0",
     "value": "GetAllDevicesList"
+  },
+  {
+    "key": "1",
+    "value": "IsServerHavePassword"
+  },
+  {
+    "key": "2",
+    "value": "SetServersPassword"
+  },
+  {
+    "key": "3",
+    "value": "GetNFCCard"
+  },
+  {
+    "key": "4",
+    "value": "PasswordAuthentication"
   }
 ]

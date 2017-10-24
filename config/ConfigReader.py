@@ -6,6 +6,7 @@ import os
 config_file_name = "config.txt"  # filename
 config_ver_key = 'ver'  # version
 config_devices_key = "devices"  # devices
+config_password_file_name = "pwd"  # password_file_name
 
 project_path = os.path.dirname(os.path.split(os.path.realpath(__file__))[0])
 
@@ -82,6 +83,44 @@ def get_devices(file_name):
             print("load device "+device.name)
             devices_list.append(device)
     return devices_list
+
+
+def check_password_file_exist():
+    check_password_file_exist_full_path = os.path.join(project_path, config_password_file_name)
+    if os.path.exists(check_password_file_exist_full_path):
+        return True
+    return False
+
+
+# setpassword
+def create_password_file(password):
+    print(password)
+    create_password_file_full_path = os.path.join(project_path, config_password_file_name)
+    if check_password_file_exist():
+        os.remove(create_password_file_full_path)
+    # write file
+    create_password_file_output = open(create_password_file_full_path, 'w')
+    create_password_file_output.write(password)
+    create_password_file_output.close()
+
+
+# check pwd
+def check_password(wait_check_password):
+    if check_password_file_exist():
+        print(wait_check_password)
+        check_password_file_full_path = os.path.join(project_path, config_password_file_name)
+        check_password_input = open(check_password_file_full_path, encoding='utf-8')
+        try:
+            check_password_true_pwd = check_password_input.read()
+        except Exception as e:
+            print(e)
+            raise e
+        finally:
+            check_password_input.close()
+        if check_password_true_pwd:
+            if wait_check_password == check_password_true_pwd:
+                return True
+    return False
 
 
 # auto load
