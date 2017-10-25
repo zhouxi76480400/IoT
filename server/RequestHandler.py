@@ -56,5 +56,19 @@ def SetServersPassword(params):
     return str(True).lower()
 
 
+# check pwd
 def PasswordAuthentication(params):
     return str(config.ConfigReader.check_password(params)).lower()
+
+
+#
+def GetNFCCard(params):
+    get_nfc_card_split = str(params).split(',')
+    get_nfc_card_pwd = get_nfc_card_split[0]
+    get_nfc_card_time = get_nfc_card_split[1]
+    get_nfc_card_pwd_check = config.ConfigReader.check_password(get_nfc_card_pwd)
+    if get_nfc_card_pwd_check:
+        key_object = config.ConfigReader.generator_a_nfc_password(get_nfc_card_pwd, get_nfc_card_time)
+        dic = {"time": key_object.create_time, "key": key_object.key}
+        return str(dic)
+    return str(False)

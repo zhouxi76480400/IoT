@@ -1,5 +1,7 @@
 import json
 import os
+import hashlib
+from pydblite import Base
 
 
 # be const
@@ -24,6 +26,13 @@ class Device(object):
     id = -1
     name = None
     desc = None
+    pass
+
+
+# a key of NFC
+class NFCKey(object):
+    create_time = 0
+    key = None
     pass
 
 
@@ -122,6 +131,29 @@ def check_password(wait_check_password):
                 return True
     return False
 
+
+def generator_a_nfc_password(pwd, time):
+    generator_a_nfc_password_md5_object = hashlib.md5()
+    generator_a_nfc_password_md5_object.update(str(pwd+time).encode(encoding='UTF-8'))
+    generator_a_nfc_password_key = generator_a_nfc_password_md5_object.hexdigest()  # this is new key
+    db = get_nfc_key_data_base()
+    generator_a_nfc_password_time_int = int(time)
+    db.insert(time=generator_a_nfc_password_time_int, pwd=generator_a_nfc_password_key)
+    db.commit()
+    nfc_key = NFCKey()
+    nfc_key.create_time = generator_a_nfc_password_time_int
+    nfc_key.key = generator_a_nfc_password_key
+    for r in db:
+        print(r)
+    return nfc_key
+
+
+def get_nfc_key_data_base():
+    db = Base('nfc_key.pdl')
+    if not db.exists():
+        db.create('time', 'pwd')
+    db.open()
+    return db
 
 # auto load
 init_config()
