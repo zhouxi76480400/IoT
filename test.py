@@ -35,5 +35,8 @@
 # transport.close()
 # loop.close()
 
+import nfc.snep
 
-# import serial
+# snep = nfc.snep.SnepClient()
+import nfc.snep.client
+

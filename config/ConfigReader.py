@@ -145,6 +145,7 @@ def generator_a_nfc_password(pwd, time):
     nfc_key.key = generator_a_nfc_password_key
     for r in db:
         print(r)
+    db = None
     return nfc_key
 
 
@@ -154,6 +155,11 @@ def get_nfc_key_data_base():
         db.create('time', 'pwd')
     db.open()
     return db
+
+
+def get_dev_full_path():
+    full_path = os.path.join(project_path, "dev")
+    return full_path
 
 # auto load
 init_config()

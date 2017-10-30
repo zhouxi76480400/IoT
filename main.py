@@ -44,8 +44,18 @@ def start_dht_11_weather_sensor_service():
     dht11.start_refresh()
 
 
+def start_nfc_module_use_python2():
+    print("start_nfc_module_use_python2: process pid:" + str(os.getpid()))
+    dev_path = ConfigReader.get_dev_full_path()
+    script_path = os.path.join(os.path.join(dev_path, 'beam_py_2'), 'start.sh')
+    print(script_path)
+    os.system(script_path)
+
+
+
+
 # create processes array
-process_func_array = [run_server_process, start_fc_light_service, start_dht_11_weather_sensor_service]
+process_func_array = [run_server_process, start_nfc_module_use_python2, start_fc_light_service, start_dht_11_weather_sensor_service]
 # create a processes pool
 pool = multiprocessing.Pool(processes=len(process_func_array))
 # start processes
