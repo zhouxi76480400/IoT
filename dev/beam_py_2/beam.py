@@ -284,6 +284,8 @@ def auth(name, t_type, data):
         # pool = multiprocessing.Pool(processes=1)
         # pool.apply_async(func=red_or_green_led_on, args=is_failed)
         red_or_green_led_on(is_failed)
+    else:
+        red_or_green_led_on(True)
 
 def red_or_green_led_on(is_red):
     if is_red:
