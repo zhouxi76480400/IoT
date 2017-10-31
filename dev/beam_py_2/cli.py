@@ -364,6 +364,8 @@ class CommandLineInterface(object):
             log.info("*** RESTART wait 3 sec ***")
             import time
             time.sleep(3)
+            import os
+            os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 0')
 
 
 # ColorStreamHandler for python logging framework.

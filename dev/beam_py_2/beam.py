@@ -271,21 +271,25 @@ def auth(name, t_type, data):
         check_nfc_pwd_util_path = os.path.join(config_path,'check_nfc_pwd_util.py')
         print check_nfc_pwd_util_path
         v_return_status = os.system("python3 " + check_nfc_pwd_util_path+' '+key_create_time+' '+key)
+        is_failed = False
         if v_return_status == 0:
+            is_failed = False
             a_time = time.time()
             print "auth ok time:" + str(a_time)
 
         else:
+            is_failed = True
             print "auth fail"
+        # import multiprocessing
+        # pool = multiprocessing.Pool(processes=1)
+        # pool.apply_async(func=red_or_green_led_on, args=is_failed)
+        red_or_green_led_on(is_failed)
 
-        # print key_create_time
-        # print key
-
-
-    # file_path =
-    # print name
-    # print type
-    # print data
+def red_or_green_led_on(is_red):
+    if is_red:
+        os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 1 0')
+    else:
+        os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 1')
 
 
 if __name__ == '__main__':

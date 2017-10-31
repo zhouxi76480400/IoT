@@ -45,6 +45,7 @@ def start_dht_11_weather_sensor_service():
 
 
 def start_nfc_module_use_python2():
+    os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 0')
     print("start_nfc_module_use_python2: process pid:" + str(os.getpid()))
     dev_path = ConfigReader.get_dev_full_path()
     script_path = os.path.join(os.path.join(dev_path, 'beam_py_2'), 'start.sh')
