@@ -271,10 +271,9 @@ def auth(name, t_type, data):
         check_nfc_pwd_util_path = os.path.join(config_path,'check_nfc_pwd_util.py')
         print check_nfc_pwd_util_path
         v_return_status = os.system("python3 " + check_nfc_pwd_util_path+' '+key_create_time+' '+key)
-        print "v_return_status=" + str(v_return_status)
         if v_return_status == 0:
             a_time = time.time()
-            print "auth ok " + str(a_time)
+            print "auth ok time:" + str(a_time)
 
         else:
             print "auth fail"
