@@ -258,19 +258,15 @@ class Main(CommandLineInterface):
             threading.Thread(target=func, args=args).start()
         return True
 
-import time
-from pydblite import Base
-import os
-import sys
-def auth(name, t_type, data):
+
+def auth_new_thread(name, t_type, data):
     if t_type == "application/me.zhouxi.iot":
-        print t_type
         key_create_time = data.split(',')[0]
         key = data.split(',')[1]
         config_path = os.path.join(os.getcwd(),'config')
         check_nfc_pwd_util_path = os.path.join(config_path,'check_nfc_pwd_util.py')
         print check_nfc_pwd_util_path
-        v_return_status = os.system("python3 " + check_nfc_pwd_util_path+' '+key_create_time+' '+key)
+        v_return_status = os.system("python3 " + check_nfc_pwd_util_path+' '+key_create_time+' '+key+' '+name)
         is_failed = False
         if v_return_status == 0:
             is_failed = False
@@ -280,19 +276,24 @@ def auth(name, t_type, data):
         else:
             is_failed = True
             print "auth fail"
-        # import multiprocessing
-        # pool = multiprocessing.Pool(processes=1)
-        # pool.apply_async(func=red_or_green_led_on, args=is_failed)
         red_or_green_led_on(is_failed)
     else:
         red_or_green_led_on(True)
+
+
+import time
+import os
+def auth(name, t_type, data):
+    from multiprocessing import Process
+    p = Process(target=auth_new_thread, args=(name,t_type,data,))
+    p.start()
+
 
 def red_or_green_led_on(is_red):
     if is_red:
         os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 1 0')
     else:
         os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 1')
-
 
 if __name__ == '__main__':
     Main().run()

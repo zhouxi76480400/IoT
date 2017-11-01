@@ -18,5 +18,9 @@
   {
     "key": "4",
     "value": "PasswordAuthentication"
+  },
+  {
+    "key": "5",
+    "value": "GetAllNFCAuthOKData"
   }
 ]
