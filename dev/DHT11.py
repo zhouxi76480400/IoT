@@ -49,7 +49,9 @@ class DHT11(object):
         GPIO.setwarnings(False)
 
     def clean_gpio(self):
-        GPIO.cleanup()
+        GPIO.setup(channel, GPIO.IN)
+        GPIO.input(channel, GPIO.LOW)
+        # GPIO.cleanup()
 
     def do_refresh(self):
         GPIO.setup(channel, GPIO.OUT)

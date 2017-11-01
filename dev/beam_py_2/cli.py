@@ -52,6 +52,11 @@ class TestSkip(Exception):
     def __str__(self):
         return str(self.value)
 
+def close_led():
+    import os
+    os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 0')
+
+
 class CommandLineInterface(object):
     def __init__(self, argument_parser, groups=''):
         self.groups = groups.split()
@@ -364,8 +369,9 @@ class CommandLineInterface(object):
             log.info("*** RESTART wait 3 sec ***")
             import time
             time.sleep(3)
-            import os
-            os.system('python3 ./dev/blink_led/OnOrOffRedAndGreenLEDs.py 0 0')
+            from multiprocessing import Process
+            p = Process(target=close_led)
+            p.start()
 
 
 # ColorStreamHandler for python logging framework.
