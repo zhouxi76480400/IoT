@@ -1,7 +1,7 @@
 import config.ConfigReader
 import json
 
-api_json = json.load(open(config.ConfigReader.project_path+"/api.json"))
+api_json = json.load(open(config.ConfigReader.project_path + "/api.json"))
 # all api dictionary
 api_json_dictionary = {}
 # get api_json_dictionary
@@ -37,7 +37,7 @@ def appendResponse(resp):
 
 # GetAllDevicesList method
 def GetAllDevicesList(params):
-    str_all = open(config.ConfigReader.project_path+"/devices.json", encoding='utf-8').read()
+    str_all = open(config.ConfigReader.project_path + "/devices.json", encoding='utf-8').read()
     return str_all
 
 
@@ -72,3 +72,8 @@ def GetNFCCard(params):
         dic = {"time": key_object.create_time, "key": key_object.key}
         return str(dic)
     return str(False)
+
+
+def GetAllNFCAuthOKData(params):
+    get_all_nfc_auth_ok_data_all_records = config.ConfigReader.get_all_record_data()
+    return get_all_nfc_auth_ok_data_all_records

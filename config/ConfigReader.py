@@ -161,5 +161,25 @@ def get_dev_full_path():
     full_path = os.path.join(project_path, "dev")
     return full_path
 
+
+def get_all_record_data():
+    db = Base('nfc_auth_ok_rec.pdl')
+    if not db.exists():
+        db.create('time', 'device', 'name')
+    db.open()
+    all_str = '['
+    i = 0
+    for r in db:
+        obj = '{\"time\":'+str(r['time'])+\
+              ',\"name\":\"'+r['name']+\
+              '\",\"device\":\"'+r['device']+'\"}'
+        all_str += obj
+        if i < len(db) - 1:
+            all_str += ','
+        i = i + 1
+    all_str += ']'
+    return all_str
+
+
 # auto load
 init_config()
